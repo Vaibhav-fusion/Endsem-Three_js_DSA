@@ -25,7 +25,7 @@ const journeySteps = [
 
 function Timeline() {
   return (
-    <section className="py-20 px-6 md:px-12 lg:px-24 bg-transparent"> {/* Changed from bg-gray-50 to bg-transparent */}
+    <section className="py-20 px-6 md:px-12 lg:px-24 bg-transparent">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center font-dragon " >
           Your Learning {'\u00A0'}
@@ -35,7 +35,7 @@ function Timeline() {
         </h2>
 
         <div className="space-y-8 relative">
-          <div className="absolute left-4 md:left-1/2 h-full w-0.5 bg-indigo-200/50 transform -translate-x-1/2"></div> {/* Added opacity to line */}
+          <div className="absolute left-4 md:left-1/2 h-full w-0.5 bg-indigo-200/50 transform -translate-x-1/2"></div> 
 
           {journeySteps.map((item, index) => (
             <div key={index} className="relative pl-10 md:pl-0">

@@ -4,6 +4,7 @@ import Home from "./pages/Home/Home";
 import DSA from "./pages/DSA/DSA";
 import Python from "./pages/Python/Python";
 import Resources from "./pages/Resources/Resource";
+// import Resources
 import LeetCodePractice from "./pages/Leet/Leetcode";
 import "./App.css";
 import "./index.css";

@@ -171,7 +171,7 @@ export default function Home({ setPage }) {
         )}
 
         <Canvas shadows camera={{ position: [0, 2, 4], fov: 70 }}>
-          {/* 1. Lighting */}
+          
           <ambientLight intensity={0.15} color={lightColor || "#ffffff"} />
 
           <directionalLight
@@ -228,8 +228,6 @@ export default function Home({ setPage }) {
           )}
 
           {cube && <SpinningCube col={lightColor} />}
-
-          {/* <Effects /> */}
 
           <OrbitControls
             enableZoom={zoom}
