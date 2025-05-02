@@ -1,188 +1,176 @@
-import React from 'react'
+import { useRef } from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { motion } from 'framer-motion';
+import { ClipboardDocumentIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
 
-function Python() {
-  return (
-    <div>Pytho,under Development still</div>
-  )
+const Python = () => {
+  const [copiedIndex, setCopiedIndex] = useState(null);
+  
+  const topics = {
+    whatIsPython: {
+      title: "What is Python?",
+      description: "Python is a high-level, interpreted programming language known for its simplicity and readability. It's widely used for web development, data analysis, AI, and more.",
+      example: `# This is a simple Python script
+print("Hello, World!")`,
+    },
+    print: {
+      title: "Print Function",
+      description: "The print() function outputs text to the console. You can print strings, numbers, variables, and more.",
+      example: `# Printing different types of data
+print("Hello")  # String
+print(42)       # Number
+print(3.14)     # Float`,
+    },
+    variables: {
+      title: "Variables",
+      description: "Variables store data values. In Python, you don't need to declare variable types - Python infers them automatically.",
+      example: `# Variable assignment
+name = "Alice"
+age = 25
+height = 5.9
+is_student = True`,
+    },
+    input: {
+      title: "User Input",
+      description: "The input() function allows you to get user input. By default, it returns the input as a string.",
+      example: `# Getting user input
+name = input("What's your name? ")
+print(f"Hello, {name}!")`,
+    },
+    ifElse: {
+      title: "If-Else Statements",
+      description: "Conditional statements let you execute different code blocks based on conditions.",
+      example: `# If-else example
+age = 18
+
+if age >= 18:
+    print("You're an adult")
+else:
+    print("You're a minor")`,
+    },
+    loops: {
+      title: "Loops",
+      description: "Loops let you execute a block of code repeatedly. Python has 'for' and 'while' loops.",
+      example: `# For loop example
+for i in range(5):
+    print(i)
+
+# While loop example
+count = 0
+while count < 5:
+    print(count)
+    count += 1`,
+    },
+    list: {
+      title: "Lists",
+      description: "Lists are ordered collections of items (which can be of different types). They are mutable (can be changed).",
+      example: `# List examples
+fruits = ["apple", "banana", "cherry"]
+numbers = [1, 2, 3, 4, 5]
+mixed = [1, "hello", 3.14, True]
+
+# Accessing elements
+print(fruits[0])  # Output: apple`,
+    },
+    dictionary: {
+      title: "Dictionaries",
+      description: "Dictionaries store key-value pairs. They are unordered, changeable, and don't allow duplicates.",
+      example: `# Dictionary example
+person = {
+    "name": "Alice",
+    "age": 25,
+    "city": "New York"
 }
 
-export default Python
-// import { useState, useRef } from 'react';
-// import { motion } from 'framer-motion';
-// import { Canvas } from '@react-three/fiber';
-// import { OrbitControls, Text3D, Float } from '@react-three/drei';
-// import { FaPython, FaCode, FaTerminal } from 'react-icons/fa';
+# Accessing values
+print(person["name"])  # Output: Alice`,
+    },
+    functions: {
+      title: "Functions",
+      description: "Functions are reusable blocks of code that perform a specific task. They help organize and modularize your code.",
+      example: `# Function example
+def greet(name):
+    return f"Hello, {name}!"
 
-// const Python = () => {
-//   const [activeSection, setActiveSection] = useState(null);
-//   const sectionRefs = {
-//     whatIsPython: useRef(null),
-//     print: useRef(null),
-//     variables: useRef(null),
-//     input: useRef(null),
-//     ifElse: useRef(null),
-//     loops: useRef(null),
-//     list: useRef(null),
-//     dictionary: useRef(null),
-//     functions: useRef(null)
-//   };
+# Calling the function
+message = greet("Bob")
+print(message)  # Output: Hello, Bob!`,
+    }
+  };
 
-//   const scrollToSection = (ref) => {
-//     ref.current?.scrollIntoView({ behavior: 'smooth' });
-//   };
+  const copyToClipboard = (code, index) => {
+    navigator.clipboard.writeText(code);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
 
-//   return (
-//     <div className="max-w-7xl mx-auto px-4 py-8">
-//       {/* 3D Python Header */}
-//       <section className="h-96 mb-16 relative">
-//         <Canvas>
-//           <ambientLight intensity={0.5} />
-//           <pointLight position={[10, 10, 10]} />
-//           <Float speed={2} rotationIntensity={0.5}>
-//             <Text3D
-//               font="/fonts/helvetiker_regular.typeface.json"
-//               size={1.5}
-//               height={0.2}
-//               curveSegments={12}
-//               bevelEnabled
-//               bevelThickness={0.02}
-//               bevelSize={0.02}
-//               bevelOffset={0}
-//               bevelSegments={5}
-//               position={[-3.5, 0, 0]}
-//             >
-//               Python
-//               <meshStandardMaterial color="#3776ab" />
-//             </Text3D>
-//           </Float>
-//           <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={2} />
-//         </Canvas>
-//         <div className="absolute bottom-0 left-0 right-0 text-center">
-//           <motion.div
-//             initial={{ y: 20, opacity: 0 }}
-//             animate={{ y: 0, opacity: 1 }}
-//             transition={{ delay: 0.5 }}
-//             className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-full"
-//           >
-//             <FaPython size={24} />
-//             <span className="text-xl font-bold">Start Learning</span>
-//           </motion.div>
-//         </div>
-//       </section>
+  const sectionRefs = {
+    whatIsPython: useRef(null),
+    print: useRef(null),
+    variables: useRef(null),
+    input: useRef(null),
+    ifElse: useRef(null),
+    loops: useRef(null),
+    list: useRef(null),
+    dictionary: useRef(null),
+    functions: useRef(null)
+  };
 
-//       {/* Why Learn Python */}
-//       <section className="mb-16">
-//         <motion.h2 
-//           initial={{ x: -20, opacity: 0 }}
-//           animate={{ x: 0, opacity: 1 }}
-//           className="text-3xl font-bold mb-6 flex items-center gap-3"
-//         >
-//           <FaCode className="text-blue-500" /> Why Learn Python?
-//         </motion.h2>
-//         <div className="grid md:grid-cols-3 gap-6">
-//           {[
-//             "Easy to learn syntax",
-//             "Versatile (Web, Data, AI, etc.)",
-//             "Huge community support"
-//           ].map((reason, i) => (
-//             <motion.div
-//               key={i}
-//               initial={{ y: 20, opacity: 0 }}
-//               animate={{ y: 0, opacity: 1 }}
-//               transition={{ delay: i * 0.1 + 0.3 }}
-//               className="bg-white p-6 rounded-xl shadow-md border border-gray-100"
-//             >
-//               <h3 className="font-bold text-lg mb-2">{reason}</h3>
-//               <p className="text-gray-600">
-//                 Python's {reason.toLowerCase()} makes it ideal for beginners and professionals alike.
-//               </p>
-//             </motion.div>
-//           ))}
-//         </div>
-//       </section>
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold text-indigo-600 mb-8">Python Basics Tutorial</h1>
+      
+      <div className="mb-12">
+        <p className="text-lg text-gray-700 dark:text-gray-300">
+          This tutorial covers the fundamental concepts of Python programming. 
+          Each section includes explanations and simple code examples to help you get started.
+        </p>
+      </div>
 
-//       {/* Table of Contents */}
-//       <section className="mb-16">
-//         <h2 className="text-2xl font-bold mb-6">Table of Contents</h2>
-//         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-//           {[
-//             { id: 'whatIsPython', title: 'What is Python?', icon: <FaPython /> },
-//             { id: 'print', title: 'Print Statements', icon: <FaTerminal /> },
-//             { id: 'variables', title: 'Variables', icon: <FaCode /> },
-//             { id: 'input', title: 'User Input', icon: <FaTerminal /> },
-//             { id: 'ifElse', title: 'If/Else', icon: <FaCode /> },
-//             { id: 'loops', title: 'Loops', icon: <FaCode /> },
-//             { id: 'list', title: 'Lists', icon: <FaCode /> },
-//             { id: 'dictionary', title: 'Dictionaries', icon: <FaCode /> },
-//             { id: 'functions', title: 'Functions', icon: <FaCode /> }
-//           ].map((item, i) => (
-//             <motion.button
-//               key={item.id}
-//               whileHover={{ y: -3 }}
-//               whileTap={{ scale: 0.95 }}
-//               onClick={() => scrollToSection(sectionRefs[item.id])}
-//               className={`p-4 rounded-lg flex items-center gap-2 ${
-//                 activeSection === item.id 
-//                   ? 'bg-blue-600 text-white' 
-//                   : 'bg-gray-100 hover:bg-gray-200'
-//               }`}
-//             >
-//               <span className="text-lg">{item.icon}</span>
-//               <span>{item.title}</span>
-//             </motion.button>
-//           ))}
-//         </div>
-//       </section>
+      <div className="space-y-16">
+        {Object.entries(topics).map(([key, topic], index) => (
+          <motion.section 
+            key={key}
+            id={key}
+            ref={sectionRefs[key]}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="scroll-mt-20"
+          >
+            <h2 className="text-2xl font-semibold text-indigo-700 dark:text-indigo-400 mb-4">{topic.title}</h2>
+            <p className="text-gray-700 dark:text-gray-300 mb-4">{topic.description}</p>
+            
+            <div className="relative">
+              <div className="absolute right-2 top-2 z-10">
+                <button
+                  onClick={() => copyToClipboard(topic.example, index)}
+                  className="p-2 rounded-md bg-indigo-700 hover:bg-indigo-800 text-white transition-colors"
+                  aria-label="Copy code"
+                >
+                  {copiedIndex === index ? (
+                    <CheckIcon className="h-5 w-5" />
+                  ) : (
+                    <ClipboardDocumentIcon className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+              <SyntaxHighlighter 
+                language="python" 
+                style={atomDark}
+                showLineNumbers
+                customStyle={{ borderRadius: '0.5rem', fontSize: '0.9rem' }}
+              >
+                {topic.example}
+              </SyntaxHighlighter>
+            </div>
+          </motion.section>
+        ))}
+      </div>
+    </div>
+  );
+};
 
-//       {/* Content Sections */}
-//       <div className="space-y-20">
-//         {/* What is Python */}
-//         <section 
-//           id="whatIsPython" 
-//           ref={sectionRefs.whatIsPython}
-//           className="pt-4"
-//         >
-//           <h2 className="text-2xl font-bold mb-4">What is Python?</h2>
-//           <div className="bg-gray-800 text-gray-100 p-6 rounded-lg">
-//             <pre className="overflow-x-auto">
-//               <code>
-// {`# Python is a high-level programming language
-// print("Hello, World!")  # This is Python code`}
-//               </code>
-//             </pre>
-//           </div>
-//           <p className="mt-4 text-gray-700">
-//             Python is an interpreted, object-oriented programming language known for its simple syntax.
-//           </p>
-//         </section>
-
-//         {/* Print Statements */}
-//         <section id="print" ref={sectionRefs.print} className="pt-4">
-//           <h2 className="text-2xl font-bold mb-4">Print Statements</h2>
-//           <div className="bg-gray-800 text-gray-100 p-6 rounded-lg">
-//             <pre className="overflow-x-auto">
-//               <code>
-// {`print("Hello World")  # Basic print
-// print(42)             # Prints numbers
-// print("Sum:", 2 + 3)  # Multiple items`}
-//               </code>
-//             </pre>
-//           </div>
-//         </section>
-
-//         {/* Continue with other sections... */}
-//         <section id="variables" ref={sectionRefs.variables} className="pt-4">
-//           {/* Variables content */}
-//         </section>
-        
-//         <section id="input" ref={sectionRefs.input} className="pt-4">
-//           {/* Input content */}
-//         </section>
-
-//         {/* Add remaining sections similarly */}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Python;
+export default Python;
